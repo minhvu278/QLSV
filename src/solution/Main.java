@@ -1,5 +1,6 @@
 package solution;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +42,8 @@ public class Main {
                 case UPDATE_STUDENT:
                     updateStudent(students, sc);
                     break;
+                case FIND_STUDENT:
+                    findStudent(students, sc);
                 case LOAD_STUDENT:
                     loadStudents(students);
                     break;
@@ -53,6 +56,61 @@ public class Main {
                     System.out.println("Wrong choice. Please enter again!");
             }
         }
+    }
+
+    private static void findStudent(List<Student> students, Scanner sc) {
+        System.out.println("** FIND STUDENTS **");
+
+        System.out.println("1. Find by id");
+        System.out.println("2. Find by name");
+        System.out.println("3. Find by math score");
+
+        System.out.print("- Enter find mode: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case FIND_MODE_ID:
+                findById(students, sc);
+                break;
+            case FIND_MODE_NAME:
+                findByNameStudent(students, sc);
+                break;
+            case FIND_MODE_MATH_SCORE:
+                findByScore(students, sc);
+                break;
+        }
+    }
+
+    private static void findByScore(List<Student> students, Scanner sc) {
+
+    }
+
+    private static void findByNameStudent(List<Student> students, Scanner sc) {
+
+    }
+
+    private static void findById(List<Student> students, Scanner sc) {
+        System.out.print("- Enter id want to find: ");
+        int findId = sc.nextInt();
+        sc.nextLine();
+
+        int pos = 0;
+        boolean found = false;
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getId() == findId) {
+                pos = i;
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("Not found student with id " + findId);
+            return;
+        }
+
+        students.remove(pos);
+        System.out.println("Find student " + findId + " success");
     }
 
     private static void loadStudents(List<Student> students) {
@@ -92,6 +150,20 @@ public class Main {
     private static void saveStudents(List<Student> students) {
         System.out.println("** Saving students.... **");
 
+        try {
+            String currentPath = Paths.get("").toAbsolutePath().toString();
+            FileWriter fw = new FileWriter(currentPath + "/src/students.txt");
+
+            StringBuilder res = new StringBuilder();
+            for (Student s : students) {
+                res.append(String.format("%d,%s,%d\n", s.getId(), s.getName(), s.getMath()));
+            }
+
+            fw.write(res.toString());
+            fw.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private static void updateStudent(List<Student> students, Scanner sc) {
@@ -188,7 +260,10 @@ public class Main {
         return newStudents;
     }
 
-    private static void removeById(List<Student> students, Scanner sc) {
+    private static void
+
+
+    removeById(List<Student> students, Scanner sc) {
         System.out.print("- Enter id want to remove: ");
         int removeId = sc.nextInt();
         sc.nextLine();

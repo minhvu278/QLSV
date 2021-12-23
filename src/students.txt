@@ -1,3 +1,2 @@
-#id,name,math
-1,Phong,10
-2,Vu,20
+1,Vu,6
+2,Phong,7
