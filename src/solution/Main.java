@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 import static solution.Constant.*;
 
@@ -83,11 +80,44 @@ public class Main {
     }
 
     private static void findByScore(List<Student> students, Scanner sc) {
+        System.out.print("- Enter student match score");
+        int mathScore = sc.nextInt();
 
+        List<Student> foundList = new ArrayList<>();
+        boolean found = false;
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getMath() == mathScore) {
+                found = true;
+                foundList.add(students.get(i));
+            }
+        }
+        if (!found) {
+            System.out.println("Not found student with name: " + mathScore);
+        }
+
+        printList(foundList);
     }
 
     private static void findByNameStudent(List<Student> students, Scanner sc) {
+        System.out.print("- Enter student name: ");
+        String search = sc.nextLine();
 
+        List<Student> foundList = new ArrayList<>();
+        boolean found = false;
+
+        for (int i = 0; i < students.size(); i++) {
+            if (Objects.equals(students.get(i).getName(), search)) {
+                found = true;
+                foundList.add(students.get(i));
+            }
+
+            if (!found) {
+                System.out.println("Not found student with name: " + search);
+            }
+
+            printList(foundList);
+        }
     }
 
     private static void findById(List<Student> students, Scanner sc) {
@@ -95,13 +125,14 @@ public class Main {
         int findId = sc.nextInt();
         sc.nextLine();
 
-        int pos = 0;
+        List<Student> foundList = new ArrayList<>();
+
         boolean found = false;
 
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).getId() == findId) {
-                pos = i;
                 found = true;
+                foundList.add(students.get(i));
             }
         }
         if (!found) {
@@ -109,8 +140,8 @@ public class Main {
             return;
         }
 
-        students.remove(pos);
-        System.out.println("Find student " + findId + " success");
+
+        printList(foundList);
     }
 
     private static void loadStudents(List<Student> students) {
@@ -227,7 +258,29 @@ public class Main {
     }
 
     private static void removeByScore(List<Student> students, Scanner sc) {
-        // TODO: complete this function
+        System.out.print("- Enter student math score: ");
+
+        int mathScore = sc.nextInt();
+        sc.nextLine();
+
+        int pos = 0;
+        boolean found = false;
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getMath() == mathScore) {
+                pos = i;
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Not found student with id " + mathScore);
+            return;
+        }
+
+        students.remove(pos);
+        System.out.println("Remove student " + mathScore + " success");
+
     }
 
     private static List<Student> removeByName(List<Student> students, Scanner sc) {
@@ -235,7 +288,6 @@ public class Main {
         String search = sc.nextLine();
         search = search.toLowerCase();
 
-        List<Integer> poses = new ArrayList<>();
         List<Student> newStudents = new ArrayList<>();
         boolean found = false;
         for (int i = 0; i < students.size(); i++) {
@@ -243,7 +295,6 @@ public class Main {
             String studentName = s.getName().toLowerCase();
 
             if (studentName.contains(search)) {
-                poses.add(i);
                 found = true;
                 continue;
             }
@@ -260,10 +311,7 @@ public class Main {
         return newStudents;
     }
 
-    private static void
-
-
-    removeById(List<Student> students, Scanner sc) {
+    private static void removeById(List<Student> students, Scanner sc) {
         System.out.print("- Enter id want to remove: ");
         int removeId = sc.nextInt();
         sc.nextLine();
